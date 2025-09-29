@@ -26,9 +26,10 @@ public class SecurityConfig {
         http
             .cors(cors -> cors.configurationSource(request -> {
                 CorsConfiguration config = new CorsConfiguration();
+                // THIS IS THE GLOW-UP: Add your live Vercel URL to the guest list
                 config.setAllowedOrigins(List.of(
                     "http://localhost:3000", 
-                    "https://ethereal-blooms-frontend.vercel.app" // Make sure this matches your Vercel URL
+                    "https://ethereal-blooms-frontend-g1qnekg-mohamed-riyazs-projects.vercel.app" // Your specific Vercel URL
                 ));
                 config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                 config.setAllowedHeaders(List.of("*"));
@@ -40,10 +41,7 @@ public class SecurityConfig {
                 .requestMatchers(
                     "/api/auth/**",      
                     "/api/send-email",   
-                    "/api/testimonials",
-                    "/manifest.json", // <-- ADDED THE ICON FILE TO THE GUEST LIST
-                    "/favicon.ico",
-                    "/logo192.png"
+                    "/api/testimonials"
                 ).permitAll()
                 .anyRequest().authenticated()
             )
