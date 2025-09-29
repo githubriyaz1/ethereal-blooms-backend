@@ -45,7 +45,7 @@ public class SecurityConfig {
                 .requestMatchers(
                     "/api/auth/**",      // For login and signup
                     "/api/send-email",   // For the public contact form
-                    "/api/testimonials"  // So everyone can see reviews
+                    "/api/testimonials"  
                 ).permitAll()
                 // Any other request must be authenticated (e.g., leaving a review)
                 .anyRequest().authenticated()
