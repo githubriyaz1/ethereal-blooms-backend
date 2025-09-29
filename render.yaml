@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: ethereal-blooms-backend
+    runtime: docker # <-- THIS IS THE GLOW-UP. We're telling it to use Docker.
+    plan: free
+    # The build and start commands are now in the Dockerfile, so we remove them from here.
+    envVars:
+      - key: SPRING_MAIL_USERNAME
+        value: seyadriyaz0@gmail.com
+      - key: SPRING_MAIL_PASSWORD
+        value: skqw irvg yrtf prxi
+      - key: JWT_SECRET
+        value: EtherealBloomsSecretKeyForJWTsToSecureTheApi
+
