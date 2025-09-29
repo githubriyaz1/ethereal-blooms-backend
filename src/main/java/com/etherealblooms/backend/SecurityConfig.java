@@ -24,29 +24,33 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            // Configure CORS
+            // Configure CORS to allow requests from both local and live frontend
             .cors(cors -> cors.configurationSource(request -> {
                 CorsConfiguration config = new CorsConfiguration();
-                config.setAllowedOrigins(List.of("http://localhost:3000"));
+                // THIS IS THE GLOW-UP: Add your live Vercel URL to the guest list
+                config.setAllowedOrigins(List.of(
+                    "http://localhost:3000",
+                    "https://ethereal-blooms-frontend.vercel.app" // Make sure this matches your Vercel URL
+                ));
                 config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                 config.setAllowedHeaders(List.of("*"));
                 config.setAllowCredentials(true);
                 return config;
             }))
-            // Disable CSRF
+            // Disable CSRF for stateless APIs
             .csrf(csrf -> csrf.disable())
-            // Define authorization rules
+            // Define authorization rules for your API endpoints
             .authorizeHttpRequests(auth -> auth
-                // THIS IS THE GLOW-UP: Allow public access to these specific endpoints
+                // These endpoints are public and don't require a login
                 .requestMatchers(
-                    "/api/auth/**",      // All authentication endpoints (login, signup)
-                    "/api/send-email",   // The public contact form
-                    "/api/testimonials"  // Let anyone view testimonials
+                    "/api/auth/**",      // For login and signup
+                    "/api/send-email",   // For the public contact form
+                    "/api/testimonials"  // So everyone can see reviews
                 ).permitAll()
-                // All other requests must be authenticated (e.g., adding a new review)
+                // Any other request must be authenticated (e.g., leaving a review)
                 .anyRequest().authenticated()
             )
-            // Use stateless sessions (for JWT)
+            // Use stateless sessions because we are using JWTs
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
